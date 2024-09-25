@@ -22,7 +22,6 @@ int		ft_start_dinner(t_dinner *dinner, int ac, char **av)
 int	main(int ac, char** av)
 {
 	t_dinner	dinner;
-	int			n;
 
 	// Returns a non 0 on error
 	if (ft_check_good_input(ac, av))

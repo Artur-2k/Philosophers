@@ -12,9 +12,9 @@ OBJ_DIR = obj/
 
 # Files
 MAIN_FILE = $(SRC_DIR)main.c
-SRC_FILES = clean_up.c diner.c get_set.c initializations.c\
-	monitoring.c mutex_handle.c parse_input.c syncro_tools.c\
-	thread_handle.c time_functions.c utils.c write_functions.c\
+SRC_FILES = clean_up.c diner.c get_set.c initializations.c \
+	monitoring.c mutex_handle.c parse_input.c syncro_tools.c \
+	thread_handle.c time_functions.c utils.c write_functions.c
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ = $(addprefix $(OBJ_DIR), $(SRC_FILES:.c=.o))
 
