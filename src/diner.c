@@ -1,5 +1,29 @@
 #include "philo.h"
 
+
+ static void	ft_lock_forks(t_philo *philo)
+{
+	t_dinner *dinner;
+
+	dinner = philo->dinner;
+ 	if (philo->philo_id % 2 == 0) // Even lock r then l
+	{
+		ft_mutex_lock(philo->r_fork); // First
+		ft_write_state(philo, FIRFORK, ft_get_elapsed_time(dinner));
+
+		ft_mutex_lock(philo->l_fork); // Second
+		ft_write_state(philo, SECFORK, ft_get_elapsed_time(dinner));
+	}
+	else // Even lock l then r
+	{
+		ft_mutex_lock(philo->l_fork); // First
+		ft_write_state(philo, FIRFORK, ft_get_elapsed_time(dinner));
+
+		ft_mutex_lock(philo->r_fork); // Second
+		ft_write_state(philo, SECFORK, ft_get_elapsed_time(dinner));
+	} 
+} 
+
 static void	ft_eating(t_philo *philo)
 {
 	t_dinner *dinner;
@@ -8,14 +32,9 @@ static void	ft_eating(t_philo *philo)
 	if (ft_get_bool(&dinner->mtx_end, &dinner->end_dinner))
 		return ;
 
-	//* First fork
-	ft_mutex_lock(philo->l_fork);
-	ft_write_state(philo, FIRFORK, ft_get_elapsed_time(dinner));
-
-	//* Second fork
-	ft_mutex_lock(philo->r_fork);
-	ft_write_state(philo, SECFORK, ft_get_elapsed_time(dinner));
-
+	// Imposes an order wich they will grab forks
+	ft_lock_forks(philo);
+	
 	//* Got both forks and now is eating
 	ft_set_int(&philo->mutex, &philo->t_last_meal, ft_get_elapsed_time(dinner));
 	ft_write_state(philo, EATING, ft_get_elapsed_time(dinner));
@@ -25,6 +44,7 @@ static void	ft_eating(t_philo *philo)
 		(philo->meal_counter)++;
 
 	ft_custom_sleep(dinner->t_eat * 1000);
+		
 
 	//* Leave the forks
 	ft_mutex_unlock(philo->l_fork);
@@ -46,6 +66,7 @@ static void	ft_thinking(t_philo *philo)
 
 	dinner = philo->dinner;
 	ft_write_state(philo, THINKING, ft_get_elapsed_time(dinner));
+	usleep(50);
 }
 
 void	*ft_dining(void *arg)

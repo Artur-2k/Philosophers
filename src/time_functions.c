@@ -16,7 +16,10 @@ void	ft_custom_sleep(long usec)
 
 	// uses the system call to sleep for the bulk
 	if (usec > 1000)
+	{
+
 		usleep (usec - 1000);
+	}
 
 	gettimeofday(&end, NULL);
     elapsed = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
@@ -25,7 +28,6 @@ void	ft_custom_sleep(long usec)
 		gettimeofday(&end, NULL);
     	elapsed = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
 	}
-
 	return ;
 }
 

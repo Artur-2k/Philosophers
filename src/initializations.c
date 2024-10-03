@@ -20,6 +20,20 @@ static int		ft_init_forks(t_dinner *dinner)
 	return (0);
 }
 
+static void	ft_assing_forks(t_dinner *dinner, int n)
+{
+	if (dinner->philos[n].philo_id % 2 == 0)
+	{
+		dinner->philos[n].l_fork =	&dinner->forks[n];
+		dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
+	}
+	else
+	{	
+		dinner->philos[n].l_fork =	&dinner->forks[n];
+		dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
+	}	
+}
+
 static int	ft_init_philos(t_dinner *dinner)
 {
 	int	n;
@@ -35,14 +49,18 @@ static int	ft_init_philos(t_dinner *dinner)
 		dinner->philos[n].meal_counter = 0;
 		dinner->philos[n].t_last_meal = 0;
 		dinner->philos[n].dinner = dinner;
-		dinner->philos[n].l_fork =	&dinner->forks[n];
-		dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
+		ft_assing_forks(dinner, n);
 
 		if (ft_mutex_init(&dinner->philos[n].mutex))
 			return (-1);
-
-		if (ft_thread_create(&dinner->philos[n].thread, ft_dining, (void*)&dinner->philos[n]))
-			return (-2);
+		if (dinner->no_philos == 1)
+		{
+			if (ft_thread_create(&dinner->philos[n].thread, ft_one_philo_case, (void*)&dinner->philos[n]))
+				return (-2);
+		}
+		else
+			if (ft_thread_create(&dinner->philos[n].thread, ft_dining, (void*)&dinner->philos[n]))
+				return (-2);
 		n++;
 	}
 	return (0); // Success

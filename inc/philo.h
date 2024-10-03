@@ -92,6 +92,7 @@ void	*ft_monitoring(t_dinner	*dinner);
 
 // Dinner
 void	*ft_dining(void *arg);
+void	*ft_one_philo_case(void *arg);
 
 // Syncro
 void	ft_sync_threads(t_dinner *dinner);
