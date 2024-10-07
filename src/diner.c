@@ -66,7 +66,7 @@ static void	ft_thinking(t_philo *philo)
 
 	dinner = philo->dinner;
 	ft_write_state(philo, THINKING, ft_get_elapsed_time(dinner));
-	usleep(50);
+	usleep(500);
 }
 
 void	*ft_dining(void *arg)
