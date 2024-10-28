@@ -22,16 +22,16 @@ static int		ft_init_forks(t_dinner *dinner)
 
 static void	ft_assing_forks(t_dinner *dinner, int n)
 {
-	if (dinner->philos[n].philo_id % 2 == 0)
-	{
-		dinner->philos[n].l_fork =	&dinner->forks[n];
-		dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
-	}
-	else
+	//if (dinner->philos[n].philo_id % 2 == 0)
+	//{
+	dinner->philos[n].l_fork =	&dinner->forks[n];
+	dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
+	//}
+	/*else
 	{	
 		dinner->philos[n].l_fork =	&dinner->forks[n];
 		dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
-	}	
+	}*/
 }
 
 static int	ft_init_philos(t_dinner *dinner)
