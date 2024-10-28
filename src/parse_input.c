@@ -17,7 +17,7 @@ int ft_check_good_input(int ac, char** av)
             return (-2);
 
         // so digitos
-        for (int j = 0; j < len; j++)
+        for (int j = 0; j < len; j++) //TODO change to while
         {
             if (!ft_isdigit(av[i][j]) || ft_isdigit(av[i][j]) == '0')
                 return (-3);
