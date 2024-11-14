@@ -6,20 +6,20 @@
 	t_dinner *dinner;
 
 	dinner = philo->dinner;
- 	if (philo->philo_id % 2 == 0) // Even lock r then l
+ 	if (philo->philo_id % 2 == 0) //* Even lock r then l
 	{
-		ft_mutex_lock(philo->r_fork); // First
+		ft_mutex_lock(philo->r_fork); //* First
 		ft_write_state(philo, FIRFORK, ft_get_elapsed_time(dinner));
 
-		ft_mutex_lock(philo->l_fork); // Second
+		ft_mutex_lock(philo->l_fork); //* Second
 		ft_write_state(philo, SECFORK, ft_get_elapsed_time(dinner));
 	}
-	else // Even lock l then r
+	else //* Even lock l then r
 	{
-		ft_mutex_lock(philo->l_fork); // First
+		ft_mutex_lock(philo->l_fork); //* First
 		ft_write_state(philo, FIRFORK, ft_get_elapsed_time(dinner));
 
-		ft_mutex_lock(philo->r_fork); // Second
+		ft_mutex_lock(philo->r_fork); //* Second
 		ft_write_state(philo, SECFORK, ft_get_elapsed_time(dinner));
 	} 
 } 
@@ -39,7 +39,7 @@ static void	ft_eating(t_philo *philo)
 	ft_set_int(&philo->mutex, &philo->t_last_meal, ft_get_elapsed_time(dinner));
 	ft_write_state(philo, EATING, ft_get_elapsed_time(dinner));
 
-	//* Check if the philo has reached the number of meals
+	//* Only if we need
 	if (dinner->no_meals)
 		(philo->meal_counter)++;
 
@@ -66,6 +66,7 @@ static void	ft_thinking(t_philo *philo)
 
 	dinner = philo->dinner;
 	ft_write_state(philo, THINKING, ft_get_elapsed_time(dinner));
+	//* Imposing a small sleep after thinking to avoid unfairness
 	usleep(500);
 }
 
@@ -77,17 +78,17 @@ void	*ft_dining(void *arg)
 	philo = (t_philo*)arg;
 	dinner = philo->dinner;
 
-	// Sync all threads
+	//* Sync all threads
 	ft_sync_threads(philo->dinner);
 
-	// Delay even philosophers to avoid deadlocks
+	//* Delay even philosophers to avoid deadlocks
 	if (philo->philo_id % 2 == 0)
 		usleep(30000);
 
-	// Actual dinner
+	//* Actual dinner
 	while (ft_get_bool(&dinner->mtx_end, &dinner->end_dinner) == false)
 	{
-		// Check if the philo is already full
+		//* Check if the philo is already full
 		if (dinner->no_meals && philo->meal_counter == dinner->no_meals)
 		{
 			ft_set_bool(&philo->mutex, &philo->full, true);
