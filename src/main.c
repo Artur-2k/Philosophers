@@ -25,10 +25,10 @@ int	main(int ac, char** av)
 
 	// Returns a non 0 on error
 	if (ft_check_good_input(ac, av))
-		return (-1);
+		return (printf("Break me and I break you\n"), -1);
 	// Initializes bools and ints and reads the conditions
 	if (ft_start_dinner(&dinner, ac, av))
-		return (-2);
+		return (printf("Break me and I break you\n"), -2);
 	ft_join_threads(&dinner);
 	ft_destroy_mutexes(&dinner);
 	free(dinner.philos);
