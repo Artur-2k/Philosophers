@@ -33,26 +33,6 @@ static void	ft_init_philo_vars(t_dinner *dinner, int n)
 	dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
 }
 
-static void	ft_clear_mutexes_error(int n, t_dinner *dinner)
-{
-	while (n >= 0)
-	{
-		if (ft_mutex_destroy(&dinner->philos[n].mutex))
-			printf("Mutex of thread %d not destroyed\n", n + 1);
-		n--;
-	}
-}
-
-static void	ft_join_threads_error(int n, t_dinner *dinner)
-{
-	while (n >= 0)
-	{
-		if (ft_thread_join(dinner->philos[n].thread))
-			printf("Error joining thread %d\n", n + 1);
-		n--;
-	}
-}
-
 static int	ft_init_philos(t_dinner *dinner)
 {
 	int	n;
@@ -72,15 +52,15 @@ static int	ft_init_philos(t_dinner *dinner)
 		dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
 
 		if (ft_mutex_init(&dinner->philos[n].mutex))
-			return (free(dinner->philos), ft_clear_mutexes_error(n, dinner), -1);
+			return (free(dinner->philos), -1);
 		if (dinner->no_philos == 1)
 		{
 			if (ft_thread_create(&dinner->philos[n].thread, ft_one_philo_case, (void*)&dinner->philos[n]))
-				return (free(dinner->philos), ft_join_threads_error(n, dinner), -2);
+				return (free(dinner->philos), -2);
 		}
 		else
 			if (ft_thread_create(&dinner->philos[n].thread, ft_dining, (void*)&dinner->philos[n]))
-				return (free(dinner->philos), ft_join_threads_error(n, dinner), -3);
+				return (free(dinner->philos), -3);
 		n++;
 	}
 	return (0); // Success
