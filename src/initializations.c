@@ -22,16 +22,6 @@ static int		ft_init_forks(t_dinner *dinner)
 	return (0);
 }
 
-static void	ft_init_philo_vars(t_dinner *dinner, int n)
-{
-	dinner->philos[n].full = false;
-	dinner->philos[n].philo_id = n + 1;
-	dinner->philos[n].meal_counter = 0;
-	dinner->philos[n].t_last_meal = 0;
-	dinner->philos[n].dinner = dinner;
-	dinner->philos[n].l_fork = &dinner->forks[n];
-	dinner->philos[n].r_fork = &dinner->forks[(n + 1) % dinner->no_philos];
-}
 
 static int	ft_init_philos(t_dinner *dinner)
 {
@@ -79,17 +69,15 @@ int		ft_init_dinner(int ac, char **av, t_dinner *dinner)
 		dinner->no_meals = ft_atoi(av[5]);
 	else
 		dinner->no_meals = 0;
-	if (ft_init_philo_vars)
-		return (-1);
 	if (ft_mutex_init(&dinner->mtx_end))
-		return (-2);
+		return (-1);
 	if (ft_mutex_init(&dinner->mutex))
-		return (-3);
+		return (-2);
 	if (ft_mutex_init(&dinner->write))
-		return (-4);
+		return (-3);
 	if (ft_init_forks(dinner))
-		return (-5);
+		return (-4);
 	if (ft_init_philos(dinner))
-		return (-6);
+		return (-5);
 	return (0);
 }
